@@ -83,15 +83,13 @@
             var user = document.getElementById('firstname').value;
 
             if (user.match(/^[a-zA-Z]+$/)) {
+                document.getElementById('errorfname').innerHTML = "";
                 return true;
-            } 
-            else if(user==""){
+            } else if (user == "") {
                 document.getElementById('errorfname').innerHTML = "";
                 document.getElementById('errorfname').innerHTML = " ** Blank field!!! Enter your First Name";
                 return false;
-            }
-            
-            else {
+            } else {
                 document.getElementById('errorfname').innerHTML = "";
                 document.getElementById('errorfname').innerHTML = " ** only alphabets are allowed";
                 return false;
@@ -104,13 +102,11 @@
             if (user.match(/^[a-zA-Z]+$/)) {
                 document.getElementById('errorlname').innerHTML = "";
                 return true;
-            } 
-            else if(user==""){
+            } else if (user == "") {
                 document.getElementById('errorlname').innerHTML = "";
                 document.getElementById('errorlname').innerHTML = " ** Blank field!!! Enter your Last Name";
                 return false;
-            }
-                else {
+            } else {
                 document.getElementById('errorlname').innerHTML = "";
                 document.getElementById('errorlname').innerHTML = " ** only alphabets are allowed";
                 return false;
@@ -120,16 +116,14 @@
 
         function validateEmail() {
             var emails = document.getElementById('email').value;
-            var emailChk=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-            if(emails.match(emailChk)){
+            var emailChk = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            if (emails.match(emailChk)) {
                 document.getElementById('erroremail').innerHTML = "";
                 return true;
-            }
-            else if (emails == "") {
+            } else if (emails == "") {
                 document.getElementById('erroremail').innerHTML = " ** Please fill the email id field";
                 return false;
-            }
-             else {
+            } else {
                 document.getElementById('erroremail').innerHTML = " ** Invalid Email";
                 return false;
             }
@@ -137,7 +131,7 @@
 
         function passwordValidate() {
             var pass = document.getElementById('password').value;
-            
+
             if (pass == "") {
                 document.getElementById('errorpassword').innerHTML = " ** Please fill the password field";
                 return false;
@@ -163,7 +157,7 @@
             } else if (pass != cpass) {
                 document.getElementById('errorcpassword').innerHTML = " ** Password does not match the confirm password";
                 return false;
-            }else{
+            } else {
                 document.getElementById('errorcpassword').innerHTML = "";
                 return true;
             }

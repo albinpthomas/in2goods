@@ -12,13 +12,15 @@ if (isset($_POST['submitBtn'])) {
         if ($userRow['password'] == $password) {
             if ($userRow['user_status'] == 2) {
                 $_SESSION['toGoods'] = session_id();
-                $_SESSION['userId']=
+                $_SESSION['userId'] = $userRow['user_id'];
+
                 echo '<script>alert("Admin Login");
                 window.location.href = "./admin/admin.php";
     </script>';
             } else {
                 if ($userRow['bussiness_name'] == 0) {
                     $_SESSION['toGoods'] = session_id();
+                    $_SESSION['userId'] = $userRow['user_id'];
                     header("Location:home.php");
                 } else {
                     echo "Bussinesss Logined";

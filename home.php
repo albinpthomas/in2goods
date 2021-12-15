@@ -14,7 +14,7 @@ if ($_SESSION['toGoods'] == session_id()) {
   </head>
 
   <body>
-    
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="#">In2Goods</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,130 +42,76 @@ if ($_SESSION['toGoods'] == session_id()) {
       </div>
     </nav>
 
-    <div class="filter-bar position-sticky">
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          All Category
-        </a>
-        <?php
-        $fetchmodel = "SELECT * FROM `tbl_items` ";
-        $fetchItems = mysqli_query($connect, $fetchmodel);
-        while ($carRows = mysqli_fetch_assoc($fetchItems)) {
-  ?>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        
-        <a class="dropdown-item" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <?php echo $carRows['brand_name'];
-                                                ?></a>
-        </a>
-          <!-- <a class="dropdown-item" href="#"> -->
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-        <?php
-        }
-        ?>
-      </li>
-    </div>
-    
-    <div class="container">
+    <div class="p-4">
       <div class="row">
         <?php
         while ($row = mysqli_fetch_assoc($fetchiteReuslt)) {
         ?>
 
-          <div class="col-xl-6 col-lg-6 col-sm-12">
-            <!-- First product box start here-->
-            <div class="prod-info-main prod-wrap clearfix">
-              <div class="row">
-                <div class="col-md-5 col-sm-12 col-xs-12">
-                  <div class="product-image">
-                    <img class="img-fluid" src="<?php
-                                                echo $row['items_img'];
-                                                ?>" class="img-responsive" />
-
-                  </div>
-                </div>
-                <div class="col-md-7 col-sm-12 col-xs-12">
-                  <div class="product-deatil">
-                    <h5 class="name">
-                      <a href="#"> <?php echo $row['items_name'] ?> </a>
-                      <a href="#">
-                        <span><?php echo $row['items_category'] ?></span>
-                      </a>
-                    </h5>
-                    <p class="price-container">
-                      <span>Rs: <?php echo $row['items_price'] ?></span>
-                    </p>
-                    <span class="tag1"></span>
-                  </div>
-                  <div class="description">
-                    <p><?php echo $row['items_desc'] ?></p>
-                  </div>
-                  <div class="product-info smart-form">
-                    <div class="row">
-                      <div class="col-12">
-                        <a href="javascript:void(0);" class="btn btn-info" data-toggle="modal" data-target="#<?php echo $row['items_name']; ?>Modal">More info</a>
-                        
-                        <div class="modal fade" id="<?php echo $row['items_name']; ?>Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <form class="modal-content" action="#" method="post">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel"><?php echo $row['items_name'] ?></h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                          <div class="form-group">
-                                            <img class="img-fluid" src="<?php
-                                                echo $row['items_img'];
-                                                ?>" class="img-responsive" />
-                                        </div>
-                                          <div class="form-group">
-                                            <label for="exampleInputPassword1">Price</label>
-                                            <p><?php echo $row['items_name'] ?></p>
-                                        </div>
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">Car details</label>
-                                                <p><?php echo $row['items_desc'] ?></p>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleInputPassword1">Price</label>
-                                                <p><?php echo $row['items_price'] ?></p>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleInputPassword1">Contact Name</label>
-                                                <p><?php echo $row['contact_name'] ?></p>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleInputPassword1">Contact Address</label>
-                                                <p><?php echo $row['contact_address'] ?></p>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleInputPassword1">Item Category</label>
-                                                <p><?php echo $row['items_category'] ?></p>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleInputPassword1">Category email</label>
-                                                <p><?php echo $row['contact_email'] ?></p>
-                                            </div>
-                                            
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+          <div class="card" style="width: 18rem;margin:5px;">
+            <img style="width: 100%; height: 180px;" src="<?php echo $row['items_img']; ?>" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title"><?php echo $row['items_name'] ?></h5>
+              <h6><?php echo $row['items_category'] ?></h6>
+              <p class="card-text" style="display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;"><?php echo $row['items_desc'] ?></p>
+              <p class="price-container">
+                <span>Rs: <?php echo $row['items_price'] ?></span>
+              </p>
+              <a href="javascript:void(0);" class="btn btn-primary" data-toggle="modal" data-target="#<?php echo $row['items_name']; ?>Modal">More info</a>
+              <div class="modal fade" id="<?php echo $row['items_name']; ?>Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                  <form class="modal-content" action="#" method="post">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel"><?php echo $row['items_name'] ?></h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="form-group">
+                        <center><img class="img-fluid" src="<?php echo $row['items_img']; ?>" class="img-responsive" /></center>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputPassword1">Price</label>
+                        <p><?php echo $row['items_name'] ?></p>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Car details</label>
+                        <p><?php echo $row['items_desc'] ?></p>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputPassword1">Price</label>
+                        <p><?php echo $row['items_price'] ?></p>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputPassword1">Contact Name</label>
+                        <p><?php echo $row['contact_name'] ?></p>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputPassword1">Contact Address</label>
+                        <p><?php echo $row['contact_address'] ?></p>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputPassword1">Item Category</label>
+                        <p><?php echo $row['items_category'] ?></p>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputPassword1">Category email</label>
+                        <p><?php echo $row['contact_email'] ?></p>
                       </div>
                     </div>
-                  </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>
-            <!-- end product -->
           </div>
+
         <?php
         }
         ?>
@@ -183,9 +129,7 @@ if ($_SESSION['toGoods'] == session_id()) {
 
   </html>
 <?php
-}
-else
-{
+} else {
   header("Location: index.php");
 }
 ?>
