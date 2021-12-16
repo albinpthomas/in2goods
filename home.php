@@ -11,6 +11,23 @@ if ($_SESSION['toGoods'] == session_id()) {
   <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous" />
     <link rel="stylesheet" href="./assets/css/main.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://releases.jquery.com/git/jquery-3.x-git.js"></script>
+
+    <script>
+      function likeFunc(adId) {
+        $.ajax({
+          type: "POST",
+          url: "save.php",
+          data: 'saveAd=' + adId,
+          success: function(data) {
+            alert(data);
+          }
+        });
+
+      }
+    </script>
   </head>
 
   <body>
@@ -51,7 +68,11 @@ if ($_SESSION['toGoods'] == session_id()) {
           <div class="card" style="width: 18rem;margin:5px;">
             <img style="width: 100%; height: 180px;" src="<?php echo $row['items_img']; ?>" class="card-img-top" alt="...">
             <div class="card-body">
-              <h5 class="card-title"><?php echo $row['items_name'] ?></h5>
+
+              <h5 class="card-title">
+                <div onclick="likeFunc('<?php echo $row['items_id'] ?>')" style="color: red;" class="fa fa-heart"></div>
+                <?php echo $row['items_name'] ?>
+              </h5>
               <h6><?php echo $row['items_category'] ?></h6>
               <p class="card-text" style="display: -webkit-box;
     -webkit-line-clamp: 3;
@@ -68,44 +89,43 @@ if ($_SESSION['toGoods'] == session_id()) {
                       <h5 class="modal-title" id="exampleModalLabel"><?php echo $row['items_name'] ?></h5>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <div class="form-group">
-                        <center><img class="img-fluid" src="<?php echo $row['items_img']; ?>" class="img-responsive" /></center>
-                      </div>
-                      <div class="form-group">
-                        <label for="exampleInputPassword1">Price</label>
-                        <p><?php echo $row['items_name'] ?></p>
-                      </div>
-                      <div class="form-group">
-                        <label for="exampleInputEmail1">Car details</label>
-                        <p><?php echo $row['items_desc'] ?></p>
-                      </div>
-                      <div class="form-group">
-                        <label for="exampleInputPassword1">Price</label>
-                        <p><?php echo $row['items_price'] ?></p>
-                      </div>
-                      <div class="form-group">
-                        <label for="exampleInputPassword1">Contact Name</label>
-                        <p><?php echo $row['contact_name'] ?></p>
-                      </div>
-                      <div class="form-group">
-                        <label for="exampleInputPassword1">Contact Address</label>
-                        <p><?php echo $row['contact_address'] ?></p>
-                      </div>
-                      <div class="form-group">
-                        <label for="exampleInputPassword1">Item Category</label>
-                        <p><?php echo $row['items_category'] ?></p>
-                      </div>
-                      <div class="form-group">
-                        <label for="exampleInputPassword1">Category email</label>
-                        <p><?php echo $row['contact_email'] ?></p>
-                      </div>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
+                        </butto </div>
+                        <div class="modal-body">
+                          <div class="form-group">
+                            <center><img class="img-fluid" src="<?php echo $row['items_img']; ?>" class="img-responsive" /></center>
+                          </div>
+                          <div class="form-group">
+                            <label for="exampleInputPassword1">Price</label>
+                            <p><?php echo $row['items_name'] ?></p>
+                          </div>
+                          <div class="form-group">
+                            <label for="exampleInputEmail1">Car details</label>
+                            <p><?php echo $row['items_desc'] ?></p>
+                          </div>
+                          <div class="form-group">
+                            <label for="exampleInputPassword1">Price</label>
+                            <p><?php echo $row['items_price'] ?></p>
+                          </div>
+                          <div class="form-group">
+                            <label for="exampleInputPassword1">Contact Name</label>
+                            <p><?php echo $row['contact_name'] ?></p>
+                          </div>
+                          <div class="form-group">
+                            <label for="exampleInputPassword1">Contact Address</label>
+                            <p><?php echo $row['contact_address'] ?></p>
+                          </div>
+                          <div class="form-group">
+                            <label for="exampleInputPassword1">Item Category</label>
+                            <p><?php echo $row['items_category'] ?></p>
+                          </div>
+                          <div class="form-group">
+                            <label for="exampleInputPassword1">Category email</label>
+                            <p><?php echo $row['contact_email'] ?></p>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
                   </form>
                 </div>
               </div>
@@ -121,10 +141,8 @@ if ($_SESSION['toGoods'] == session_id()) {
     </div>
 
 
-
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-
   </body>
 
   </html>
