@@ -24,15 +24,17 @@ if ($_SESSION['toGoods'] == session_id()) {
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="./home.php">Home</a>
+                        <a class="nav-link" href="./home.php">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Sell <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="./sell.php">Sell</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="./liked.php">Favorites</a>
                     </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link" href="./myads.php">My Ads</a>
+                    </li>
                 </ul>
                 <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
@@ -118,7 +120,7 @@ if ($_SESSION['toGoods'] == session_id()) {
                                 <h6 class="font-weight-bold pt-4 pb-1">Item Price:</h6>
                                 <div class="row px-3">
                                     <div class="col-lg-4 mr-lg-4 rounded bg-white my-2 ">
-                                        <input type="text" name="price" class="border-0 py-2 w-100 price" placeholder="Price" id="price">
+                                        <input type="number" name="price" class="border-0 py-2 w-100 price" placeholder="Price" id="price">
                                     </div>
                                     <div class="col-lg-4 mrx-4 rounded bg-white my-2 ">
                                         <input type="checkbox" name="negotiable" value="1" id="Negotiable">
@@ -190,25 +192,23 @@ if ($_SESSION['toGoods'] == session_id()) {
 
 if (isset($_POST['submitAdd'])) {
     extract($_POST);
+    $userId = $_SESSION['userId'];
+
     $target_dir = "assets/images/";
     $file_exp = pathinfo($_FILES['fileToUpload']['name'], PATHINFO_EXTENSION);
     $target_file = $target_dir . time() . "." . $file_exp;
-    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-        if ($negotiable == 1) {
-            $insert = "INSERT INTO `tbl_items`(`ad_title`, `items_name`,`company_id`, `ad_type`, `negotible`, `contact_name`, `contact_number`, `contact_email`, `contact_address`, `items_img`, `items_category`, `items_price`, `items_desc`)
-            VALUES ('$titleOfAd','$itemName','$company_id','$adType','$negotiable','$contact_name','$contact_no','$contact_email','$contact_address','$target_file','$item_category','$price','$desc')";
-        } else {
-            $insert = "INSERT INTO `tbl_items`(`ad_title`, `items_name`,`company_id`, `ad_type`, `contact_name`, `contact_number`, `contact_email`, `contact_address`, `items_img`, `items_category`, `items_price`, `items_desc`)
-            VALUES ('$titleOfAd','$itemName','$company_id','$adType','$contact_name','$contact_no','$contact_email','$contact_address','$target_file','$item_category','$price','$desc')";
-        }
-        if (mysqli_query($connect, $insert)) {
-            echo "<script>alert('Ad posted')</script>";
-        } else {
-            echo "<script>alert('Error')</script>";
-        }
+    move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
+    if ($negotiable == 1) {
+        $insert = "INSERT INTO `tbl_items`(`user_id`,`ad_title`, `items_name`,`company_id`, `ad_type`, `negotible`, `contact_name`, `contact_number`, `contact_email`, `contact_address`, `items_img`, `items_category`, `items_price`, `items_desc`)
+            VALUES ('$userId','$titleOfAd','$itemName','$company_id','$adType','$negotiable','$contact_name','$contact_no','$contact_email','$contact_address','$target_file','$item_category','$price','$desc')";
     } else {
-        echo '<script>alert("Error on file upload");
-     </script>';
+        $insert = "INSERT INTO `tbl_items`(`user_id`,`ad_title`, `items_name`,`company_id`, `ad_type`, `contact_name`, `contact_number`, `contact_email`, `contact_address`, `items_img`, `items_category`, `items_price`, `items_desc`)
+            VALUES ('$userId','$titleOfAd','$itemName','$company_id','$adType','$contact_name','$contact_no','$contact_email','$contact_address','$target_file','$item_category','$price','$desc')";
+    }
+    if (mysqli_query($connect, $insert)) {
+        echo "<script>alert('Ad posted')</script>";
+    } else {
+        echo "<script>alert('Error')</script>";
     }
 }
 ?>

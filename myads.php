@@ -2,6 +2,9 @@
 session_start();
 if ($_SESSION['toGoods'] == session_id()) {
     include "./include/dbconnect.php";
+    $userId = $_SESSION['userId'];
+    $fetchite = "SELECT * FROM `tbl_items` WHERE `user_id`='$userId' AND `items_status`!=0";
+    $fetchiteReuslt = mysqli_query($connect, $fetchite);
 ?>
     <!DOCTYPE html>
     <html>
@@ -14,6 +17,7 @@ if ($_SESSION['toGoods'] == session_id()) {
     </head>
 
     <body>
+
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="#">In2Goods</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,18 +50,14 @@ if ($_SESSION['toGoods'] == session_id()) {
                 </form>
             </div>
         </nav>
-        <div class="row">
-            <?php
-            $userId = $_SESSION['userId'];
-            $fetchAllSavedQuery = "SELECT * FROM `tbl_save` WHERE `user_id`= $userId";
-            $fetchedAllSaved = mysqli_query($connect, $fetchAllSavedQuery);
-            if (mysqli_num_rows($fetchedAllSaved) > 0) {
-                while ($savedProductsData = mysqli_fetch_assoc($fetchedAllSaved)) {
-                    $itemId = $savedProductsData['items_id'];
-                    $fetchite = "SELECT * FROM `tbl_items` WHERE `items_id`='$itemId'";
-                    $fetchiteReuslt = mysqli_query($connect, $fetchite);
+        <div class="p-4">
+            <div class="row">
+                <?php
+                if (mysqli_num_rows($fetchiteReuslt) > 0) {
+
                     while ($row = mysqli_fetch_assoc($fetchiteReuslt)) {
-            ?>
+                ?>
+
                         <div class="card" style="width: 18rem;margin:5px;">
                             <img style="width: 100%; height: 180px;" src="<?php echo $row['items_img']; ?>" class="card-img-top" alt="...">
                             <div class="card-body">
@@ -148,14 +148,17 @@ if ($_SESSION['toGoods'] == session_id()) {
                             </div>
                         </div>
 
-            <?php
+                <?php
                     }
+                } else {
+                    echo "<h3 class='m-auto'>Nothing here..!</h3>";
                 }
-            } else {
-                echo "<h3 class='m-auto'>Nothing here..!</h3>";
-            }
-            ?>
+                ?>
+
+            </div>
+
         </div>
+
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
