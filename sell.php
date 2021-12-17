@@ -46,32 +46,6 @@ if ($_SESSION['toGoods'] == session_id()) {
             </div>
         </nav>
 
-        <div class="filter-bar position-sticky">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    All Category
-                </a>
-                <?php
-                $fetchmodel = "SELECT * FROM `tbl_items`";
-                $fetchItems = mysqli_query($connect, $fetchmodel);
-                while ($carRows = mysqli_fetch_assoc($fetchItems)) {
-                ?>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-                        <a class="dropdown-item" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <?php echo $carRows['brand_name'];
-                            ?></a>
-                        </a>
-                        <!-- <a class="dropdown-item" href="#"> -->
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                <?php
-                }
-                ?>
-            </li>
-        </div>
-
         <div class="container">
 
             <form method="post" enctype="multipart/form-data">
