@@ -13,21 +13,6 @@ if ($_SESSION['toGoods'] == session_id()) {
     <link rel="stylesheet" href="./assets/css/main.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="https://releases.jquery.com/git/jquery-3.x-git.js"></script>
-
-    <script>
-      function likeFunc(adId) {
-        $.ajax({
-          type: "POST",
-          url: "save.php",
-          data: 'saveAd=' + adId,
-          success: function(data) {
-            alert(data);
-          }
-        });
-
-      }
-    </script>
   </head>
 
   <body>
@@ -45,6 +30,9 @@ if ($_SESSION['toGoods'] == session_id()) {
           </li>
           <li class="nav-item">
             <a class="nav-link" href="./sell.php">Sell</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./liked.php">Favorites</a>
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
@@ -70,7 +58,6 @@ if ($_SESSION['toGoods'] == session_id()) {
             <div class="card-body">
 
               <h5 class="card-title">
-                <div onclick="likeFunc('<?php echo $row['items_id'] ?>')" style="color: red;" class="fa fa-heart"></div>
                 <?php echo $row['items_name'] ?>
               </h5>
               <h6><?php echo $row['items_category'] ?></h6>
@@ -81,7 +68,31 @@ if ($_SESSION['toGoods'] == session_id()) {
               <p class="price-container">
                 <span>Rs: <?php echo $row['items_price'] ?></span>
               </p>
-              <a href="javascript:void(0);" class="btn btn-primary" data-toggle="modal" data-target="#<?php echo $row['items_name']; ?>Modal">More info</a>
+              <div class="row">
+
+                <?php
+                $item_id = $row['items_id'];
+                $userId = $_SESSION['userId'];
+                $isSaved = "SELECT * FROM `tbl_save` WHERE `items_id`=$item_id AND `user_id`= $userId";
+                $likedAd = mysqli_query($connect, $isSaved);
+                if (mysqli_num_rows($likedAd) > 0) {
+                  $savedAds = mysqli_fetch_assoc($likedAd)
+                ?>
+                  <form action="save.php" method="post">
+                    <button type="submit" class="btn btn-success col-10 m-2" value="<?php echo $savedAds['save_id'] ?>" name="unlikeButton">Unlike</button>
+                  </form>
+                <?php
+                } else {
+                ?>
+                  <form action="save.php" method="post">
+                    <button type="submit" class="btn btn-primary col-10 m-2" value="<?php echo $row['items_id'] ?>" name="likeButton">Like</button>
+                  </form>
+                <?php
+                }
+                ?>
+                <a href="javascript:void(0);" class="btn btn-primary col m-2" data-toggle="modal" data-target="#<?php echo $row['items_name']; ?>Modal">More info</a>
+              </div>
+
               <div class="modal fade" id="<?php echo $row['items_name']; ?>Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                   <form class="modal-content" action="#" method="post">

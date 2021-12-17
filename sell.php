@@ -29,6 +29,9 @@ if ($_SESSION['toGoods'] == session_id()) {
                     <li class="nav-item">
                         <a class="nav-link" href="#">Sell <span class="sr-only">(current)</span></a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./liked.php">Favorites</a>
+                    </li>
 
                 </ul>
                 <form class="form-inline my-2 my-lg-0">
@@ -224,7 +227,7 @@ if (isset($_POST['submitAdd'])) {
             $insert = "INSERT INTO `tbl_items`(`ad_title`, `items_name`,`company_id`, `ad_type`, `contact_name`, `contact_number`, `contact_email`, `contact_address`, `items_img`, `items_category`, `items_price`, `items_desc`)
             VALUES ('$titleOfAd','$itemName','$company_id','$adType','$contact_name','$contact_no','$contact_email','$contact_address','$target_file','$item_category','$price','$desc')";
         }
-        if(mysqli_query($connect, $insert)){
+        if (mysqli_query($connect, $insert)) {
             echo "<script>alert('Ad posted')</script>";
         } else {
             echo "<script>alert('Error')</script>";
