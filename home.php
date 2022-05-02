@@ -13,6 +13,73 @@ if ($_SESSION['toGoods'] == session_id()) {
     <link rel="stylesheet" href="./assets/css/main.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+
+    <script>
+      function fetchCar(CarBrand) {
+        var value = $('#company_name :selected').val();
+        $.ajax({
+          url: "./server.php",
+          type: "POST",
+          data: {
+            Url: value
+          },
+          success: function(data, status) {
+            $('#car_name').html(data);
+            $('#websiteLoading').css('display', 'none');
+            if (data == 404) {
+              websiteStatus = false;
+              $('#websiteError').css('display', 'inline-block');
+
+            } else if (data == 200) {
+              websiteStatus = true;
+              $('#websiteSuccess').css('display', 'inline-block');
+            }
+          }
+        });
+      }
+
+      function cate(category){
+        var car= $('#car_name :selected').val();
+        console.log(car);
+        document.querySelector(".allResult").classList.add("displayNone");
+          document.querySelector(".datas").classList.remove("displayNone");
+          $.ajax({
+            url: "./search.php",
+            method: "POST",
+            data: {
+              car: car
+            },
+            success: function(data) {
+              $('#search-result').html(data);
+            }
+          })
+      }
+
+      function searchItem(item) {
+        if (item.length != 0) {
+          document.querySelector(".allResult").classList.add("displayNone");
+          document.querySelector(".datas").classList.remove("displayNone");
+          $.ajax({
+            url: "./search.php",
+            method: "POST",
+            data: {
+              item: item
+            },
+            success: function(data) {
+              $('#search-result').html(data);
+            }
+          })
+        } else {
+          document.querySelector(".allResult").classList.remove("displayNone");
+          document.querySelector(".datas").classList.add("displayNone");
+        }
+      }
+    </script>
+
+
+
   </head>
 
   <body>
@@ -37,12 +104,38 @@ if ($_SESSION['toGoods'] == session_id()) {
           <li class="nav-item">
             <a class="nav-link" href="./myads.php">My Ads</a>
           </li>
+
+
+
+
+          <li class="nav-item active">
+            <a class="nav-link">
+              <select id="company_name" name="company_name" onchange="fetchCar(this)">
+                <option value="0">--Select--</option>
+                <option value="Maruti Suzuki ">Maruti Suzuki </option>
+                <option value="Toyota">Toyota</option>
+                <option value="Tata">Tata</option>
+                <option value="Honda">Honda </option>
+                <option value="Hyundai">Hyundai</option>
+              </select>
+            </a>
+          </li>
+
+          <li class="nav-item active">
+            <a class="nav-link">
+              <select id="car_name" name="car_name" onchange="cate(this)">
+                <option value="0">--- Choose a Car ---</option>
+              </select>
+            </a>
+          </li>
+
+
         </ul>
         <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+          <input class="form-control mr-sm-2" onkeyup="searchItem(this.value)" type="search" placeholder="Search" aria-label="Search" />
+          <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
             Search
-          </button>
+          </button> -->
           <a class="btn btn-danger mx-2 my-2 my-sm-0" href="logout.php">
             Logout
           </a>
@@ -51,7 +144,12 @@ if ($_SESSION['toGoods'] == session_id()) {
     </nav>
 
     <div class="p-4">
-      <div class="row">
+
+      <div class="row datas" id="search-result">
+        <!-- Inject search reult -->
+      </div>
+
+      <div class="row allResult">
         <?php
         while ($row = mysqli_fetch_assoc($fetchiteReuslt)) {
         ?>
@@ -103,43 +201,48 @@ if ($_SESSION['toGoods'] == session_id()) {
                       <h5 class="modal-title" id="exampleModalLabel"><?php echo $row['items_name'] ?></h5>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
-                        </butto </div>
-                        <div class="modal-body">
-                          <div class="form-group">
-                            <center><img class="img-fluid" src="<?php echo $row['items_img']; ?>" class="img-responsive" /></center>
-                          </div>
-                          <div class="form-group">
-                            <label for="exampleInputPassword1">Price</label>
-                            <p><?php echo $row['items_name'] ?></p>
-                          </div>
-                          <div class="form-group">
-                            <label for="exampleInputEmail1">Car details</label>
-                            <p><?php echo $row['items_desc'] ?></p>
-                          </div>
-                          <div class="form-group">
-                            <label for="exampleInputPassword1">Price</label>
-                            <p><?php echo $row['items_price'] ?></p>
-                          </div>
-                          <div class="form-group">
-                            <label for="exampleInputPassword1">Contact Name</label>
-                            <p><?php echo $row['contact_name'] ?></p>
-                          </div>
-                          <div class="form-group">
-                            <label for="exampleInputPassword1">Contact Address</label>
-                            <p><?php echo $row['contact_address'] ?></p>
-                          </div>
-                          <div class="form-group">
-                            <label for="exampleInputPassword1">Item Category</label>
-                            <p><?php echo $row['items_category'] ?></p>
-                          </div>
-                          <div class="form-group">
-                            <label for="exampleInputPassword1">Category email</label>
-                            <p><?php echo $row['contact_email'] ?></p>
-                          </div>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        </div>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="form-group">
+                        <center><img class="img-fluid" src="<?php echo $row['items_img']; ?>" class="img-responsive" /></center>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputPassword1"></label>
+                        <p><?php echo $row['ad_title'] ?></p>
+                      </div>
+                      <div class="form-group">
+                        <label style="color:red;" for="exampleInputEmail1">Car details</label>
+                        <p><?php echo $row['items_desc'] ?></p>
+                      </div>
+                      <div class="form-group">
+                        <label style="color:red;" for="exampleInputPassword1">Item Category</label>
+                        <p><?php echo $row['items_category'] ?></p>
+                      </div>
+                      <div class="form-group">
+                        <label style="color:red;" for="exampleInputPassword1">Price</label>
+                        <p><?php echo $row['items_price'] ?></p>
+                      </div>
+                      <div class="form-group">
+                        <label style="color:red;" for="exampleInputPassword1">Contact Name</label>
+                        <p><?php echo $row['contact_name'] ?></p>
+                      </div>
+                      <div class="form-group">
+                        <label style="color:red;" for="exampleInputPassword1">Contact Address</label>
+                        <p><?php echo $row['contact_address'] ?></p>
+                      </div>
+                      <div class="form-group">
+                        <label style="color:red;" for="exampleInputPassword1">Category email</label>
+                        <p><?php echo $row['contact_email'] ?></p>
+                      </div>
+                      <div class="form-group">
+                        <label style="color:red;" for="exampleInputPassword1">Contact Number</label>
+                        <p><?php echo $row['contact_number'] ?></p>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
                   </form>
                 </div>
               </div>
@@ -155,7 +258,6 @@ if ($_SESSION['toGoods'] == session_id()) {
     </div>
 
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
   </body>
 

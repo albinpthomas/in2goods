@@ -23,10 +23,11 @@ if ($_SESSION['toGoods'] == session_id()) {
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
+                    <li class="nav-item">
+
                         <a class="nav-link" href="./home.php">Home <span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="./sell.php">Sell</a>
                     </li>
                     <li class="nav-item">
@@ -37,10 +38,10 @@ if ($_SESSION['toGoods'] == session_id()) {
                     </li>
                 </ul>
                 <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
+                    <!-- <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
                         Search
-                    </button>
+                    </button> -->
                     <a class="btn btn-danger mx-2 my-2 my-sm-0" href="logout.php">
                         Logout
                     </a>
@@ -76,6 +77,8 @@ if ($_SESSION['toGoods'] == session_id()) {
                             $sql1 = "SELECT * FROM `car_company`";
                             $result1 = mysqli_query($connect, $sql1);
                             ?>
+
+
                             <h6 class="font-weight-bold pt-4 pb-1">Company</h6>
                             <select name="company_id" id="inputGroupSelect" class="w-100">
                                 <option value="1">Select category</option>
@@ -84,6 +87,7 @@ if ($_SESSION['toGoods'] == session_id()) {
                                     <option value="<?php echo $row1['company_id']; ?>"><?php echo $row1['company_name']; ?></option>
                                 <?php } ?>
                             </select>
+
 
                             <h6 class="font-weight-bold pt-4 pb-1">Ad Type:</h6>
                             <div class="row px-3">
@@ -104,12 +108,14 @@ if ($_SESSION['toGoods'] == session_id()) {
                             $sql1 = "select * from car_category";
                             $result1 = mysqli_query($connect, $sql1);
                             ?>
-                            <h6 class="font-weight-bold pt-4 pb-1">Select Ad Category:</h6>
+                            <h6 class="font-weight-bold pt-4 pb-1">Select Category:</h6>
                             <select name="item_category" id="inputGroupSelect" class="w-100">
                                 <option value="1">Select category</option>
-                                <?php while ($row1 =  mysqli_fetch_array($result1)) {
+                                <?php
+                                $fetch = "SELECT DISTINCT car_type FROM `car_category`";
+                                while ($row1 =  mysqli_fetch_array($result1)) {
                                     $id = $row1['company_id'];
-                                    $fetch = "SELECT * from car_company where company_id='$id'";
+
                                     $fetchResult = mysqli_query($connect, $fetch);
                                     $row2 = mysqli_fetch_array($fetchResult);
                                 ?>
@@ -120,12 +126,65 @@ if ($_SESSION['toGoods'] == session_id()) {
                                 <h6 class="font-weight-bold pt-4 pb-1">Item Price:</h6>
                                 <div class="row px-3">
                                     <div class="col-lg-4 mr-lg-4 rounded bg-white my-2 ">
-                                        <input type="number" name="price" class="border-0 py-2 w-100 price" placeholder="Price" id="price">
+                                        <input type="number" name="price" class="border-0 py-2 w-100 price" min="0" placeholder="Price" id="price">
                                     </div>
                                     <div class="col-lg-4 mrx-4 rounded bg-white my-2 ">
-                                        <input type="checkbox" name="negotiable" value="1" id="Negotiable">
-                                        <label for="Negotiable" class="py-2">Negotiable</label>
+                                        <label for="Negotiable" class="py-2">Negotiable:</label><br>
+                                        <input type="radio" name="negotiable" value="1" id="Negotiable">Yes<br>
+                                        <input type="radio" name="negotiable" value="0" id="Negotiable">No
+
                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="km">
+                                <h6 class="font-weight-bold pt-4 pb-1">KM Driven:</h6>
+                                <div class="row px-3">
+                                    <div class="col-lg-4 mr-lg-4 rounded bg-white my-2 ">
+                                        <input type="number" name="km" class="border-0 py-2 w-100 price" min="0" placeholder="KM" id="km">
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="insurance">
+                                <h6 class="font-weight-bold pt-4 pb-1">Type of Insurance:</h6>
+                                <div class="row px-3">
+                                    <div class="col-lg-4 mr-lg-4 rounded bg-white my-2 ">
+                                        <input type="text" name="insurance" class="border-0 py-2 w-100 price" placeholder="Insurance Type" id="insurance">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="registration">
+                                <h6 class="font-weight-bold pt-4 pb-1">Registration Details:</h6>
+                                <div class="row px-3">
+                                    <div class="col-lg-4 mr-lg-4 rounded bg-white my-2 ">
+                                        <input type="text" name="registration" class="border-0 py-2 w-100 price" placeholder="Registration" id="registration">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="fuel">
+                                <h6 class="font-weight-bold pt-4 pb-1">Type of Fuel:</h6>
+                                <div class="row px-3">
+                                    <div class="col-lg-4 mr-lg-4 rounded bg-white my-2 ">
+                                        <input type="text" name="fuel" class="border-0 py-2 w-100 price" placeholder="Fuel Type" id="fuel">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="owner">
+                                <h6 class="font-weight-bold pt-4 pb-1">Ownership Details:</h6>
+                                <div class="row px-3">
+                                    <div class="col-lg-4 mr-lg-4 rounded bg-white my-2 ">
+                                        <input type="number" name="owner" class="border-0 py-2 w-100 price" min="0" placeholder="Ownership" id="owner">
+                                    </div>
+
                                 </div>
                             </div>
                             <div class="choose-file text-center my-4 py-4 rounded">
@@ -191,19 +250,42 @@ if ($_SESSION['toGoods'] == session_id()) {
 }
 
 if (isset($_POST['submitAdd'])) {
-    extract($_POST);
     $userId = $_SESSION['userId'];
+
+    $titleOfAd = $_POST['titleOfAd'];
+    $itemName = $_POST['itemName'];
+    $company_id = $_POST['company_id'];
+    $adType = $_POST['adType'];
+    $negotiable = $_POST['negotiable'];
+    $contact_name = $_POST['contact_name'];
+    $contact_no = $_POST['contact_no'];
+
+
+    $contact_email = $_POST['contact_email'];
+    $contact_address = $_POST['contact_address'];
+    $item_category = $_POST['item_category'];
+    $price = $_POST['price'];
+    $desc = $_POST['desc'];
+
+    $km = $_POST['km'];
+    $insurance = $_POST['insurance'];
+    $registration = $_POST['registration'];
+    $fuel = $_POST['fuel'];
+    $owner = $_POST['owner'];
+
+
+
 
     $target_dir = "assets/images/";
     $file_exp = pathinfo($_FILES['fileToUpload']['name'], PATHINFO_EXTENSION);
     $target_file = $target_dir . time() . "." . $file_exp;
     move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
     if ($negotiable == 1) {
-        $insert = "INSERT INTO `tbl_items`(`user_id`,`ad_title`, `items_name`,`company_id`, `ad_type`, `negotible`, `contact_name`, `contact_number`, `contact_email`, `contact_address`, `items_img`, `items_category`, `items_price`, `items_desc`)
-            VALUES ('$userId','$titleOfAd','$itemName','$company_id','$adType','$negotiable','$contact_name','$contact_no','$contact_email','$contact_address','$target_file','$item_category','$price','$desc')";
+        $insert = "INSERT INTO `tbl_items`(`user_id`,`ad_title`, `items_name`,`company_id`, `ad_type`, `negotible`, `contact_name`, `contact_number`, `contact_email`, `contact_address`, `items_img`, `items_category`, `items_price`,`km`, `insurance_type`, `Registration`, `Fuel_type`, `Ownership`, `items_desc`)
+            VALUES ('$userId','$titleOfAd','$itemName','$company_id','$adType','$negotiable','$contact_name','$contact_no','$contact_email','$contact_address','$target_file','$item_category','$price','$km','$insurance','$registration','$fuel','$owner','$desc')";
     } else {
-        $insert = "INSERT INTO `tbl_items`(`user_id`,`ad_title`, `items_name`,`company_id`, `ad_type`, `contact_name`, `contact_number`, `contact_email`, `contact_address`, `items_img`, `items_category`, `items_price`, `items_desc`)
-            VALUES ('$userId','$titleOfAd','$itemName','$company_id','$adType','$contact_name','$contact_no','$contact_email','$contact_address','$target_file','$item_category','$price','$desc')";
+        $insert = "INSERT INTO `tbl_items`(`user_id`,`ad_title`, `items_name`,`company_id`, `ad_type`, `negotible`,`contact_name`, `contact_number`, `contact_email`, `contact_address`, `items_img`, `items_category`, `items_price`, `km`, `insurance_type`, `Registration`, `Fuel_type`, `Ownership`,`items_desc`)
+            VALUES ('$userId','$titleOfAd','$itemName','$company_id','$adType','$negotiable','$contact_name','$contact_no','$contact_email','$contact_address','$target_file','$item_category','$price','$km','$insurance','$registration','$fuel','$owner','$desc')";
     }
     if (mysqli_query($connect, $insert)) {
         echo "<script>alert('Ad posted')</script>";
